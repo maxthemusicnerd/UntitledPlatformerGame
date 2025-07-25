@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://oagkb2xco4p8"]
+
+[ext_resource type="Script" uid="uid://dcwexdhexe4a5" path="res://Scenes/ManagerNodes/ManagerNodeScripts/audio_manager.gd" id="1_efnfd"]
+[ext_resource type="AudioStream" uid="uid://8bborg713pkx" path="res://Audio/Music/Ready/SpeedyNight.mp3" id="2_g8qa4"]
+[ext_resource type="AudioStream" uid="uid://bsnd6p1m37o1g" path="res://Audio/Music/Ready/SpeedyCastle.mp3" id="3_gydrk"]
+[ext_resource type="AudioStream" uid="uid://cy5q8pwuhos8j" path="res://Audio/Music/Ready/SpeedyHat.mp3" id="4_xp8vq"]
+[ext_resource type="AudioStream" uid="uid://dwasproytquno" path="res://Audio/Music/Ready/SpeedyDrums.mp3" id="5_0o4gx"]
+
+[node name="AudioManager" type="Node2D"]
+script = ExtResource("1_efnfd")
+
+[node name="Music" type="Node2D" parent="."]
+
+[node name="Night" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("2_g8qa4")
+volume_db = -5.0
+autoplay = true
+bus = &"Music"
+
+[node name="Castle" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("3_gydrk")
+volume_db = -80.0
+autoplay = true
+bus = &"Music"
+
+[node name="Hat" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("4_xp8vq")
+autoplay = true
+bus = &"Music"
+
+[node name="Drum" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("5_0o4gx")
+volume_db = -10.0
+autoplay = true
+bus = &"Music"

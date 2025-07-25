@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmituphdvvrwm"]
+
+[ext_resource type="PackedScene" uid="uid://c17q2sh6vctgn" path="res://Scenes/Levels/nightcastletileset.tscn" id="1_a3pmu"]
+[ext_resource type="Script" uid="uid://dmlk7b0cjxcmj" path="res://Scenes/Levels/levelScripts/levels.gd" id="1_lppel"]
+
+[node name="Basiclevel" type="Node2D"]
+script = ExtResource("1_lppel")
+
+[node name="TileMapLayer" parent="." instance=ExtResource("1_a3pmu")]
+
+[node name="enemies" type="Node2D" parent="."]
+
+[node name="MusicTriggers" type="Node2D" parent="."]
+
+[node name="Deathzones" type="Node2D" parent="."]
+
+[node name="spawnpoint" type="Marker2D" parent="."]

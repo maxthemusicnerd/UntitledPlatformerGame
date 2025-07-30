@@ -4,14 +4,17 @@ const MAX_SPEED = 600.0
 const START_SPEED = 200.0
 var speed = START_SPEED
 
-const JUMP_HEIGHT = 500
+const JUMP_HEIGHT = 530
 
 const MAX_GRAVITY = 40
 const START_GRAVITY = 20
 var grav = START_GRAVITY
 var sprite
-var is_jumping
+var is_jumping = false
 var last_time_on_ground
+
+
+
 
 enum STATES { MOBILE, DEAD, WIN}
 
@@ -21,8 +24,19 @@ var state = STATES.MOBILE
 
 var nearEnemy = []
 var isDashing
-var dashStrenghth = 1000
+#dash strength is normally 1000
+var dashStrenghth = 1200
 var airdashtimer
+
+
+#walljump and slide code
+var wallSlideDecrement := 1.0
+var canWallJump := false
+var isWallJumping := false 
+
+@onready var rightchecker = $WalljumpColliders/rightchecker
+@onready var leftchecker = $WalljumpColliders/leftchecker
+
 
 
 #music code
@@ -93,6 +107,11 @@ func randomizePitchAndPlay(sfx, min, max):
 	sfx.play()
 
 
+#input buffering 
+var timeSinceAirdashPress: float = 1
+var timeSinceJumpPress: float = 1
+
+
 func _physics_process(delta: float) -> void: 
 	#print(Engine.get_frames_per_second())
 	var on_floor = false
@@ -101,7 +120,19 @@ func _physics_process(delta: float) -> void:
 		last_time_on_ground = Time.get_ticks_msec()
 	
 	
-	if Input.is_action_just_pressed("airdash") and nearEnemy.size() > 0:
+	#input buffering
+	timeSinceAirdashPress += delta
+	timeSinceJumpPress += delta
+	
+	if Input.is_action_just_pressed("airdash"):
+		timeSinceAirdashPress = 0 
+	
+	if Input.is_action_just_pressed("jump"):
+		timeSinceJumpPress = 0
+	
+	
+	if timeSinceAirdashPress < 0.1 and nearEnemy.size() > 0:
+		timeSinceAirdashPress += 1
 		var enemy
 		var enemyDist = 10000000
 		for entity in nearEnemy:
@@ -121,7 +152,21 @@ func _physics_process(delta: float) -> void:
 		
 	
 	
-	if Input.is_action_just_pressed("jump") and (on_floor or (Time.get_ticks_msec() - last_time_on_ground) < 200) and is_jumping == false:
+	if Input.is_action_just_pressed("jump") and canWallJump and not on_floor:
+		isWallJumping = true 
+		velocity.y = -JUMP_HEIGHT * 1.2
+		if facing_forward:
+			velocity.x = -500
+		else:
+			velocity.x = 500
+		randomizePitchAndPlay($SFX/jump, 0.95, 1.05)
+		airdashtimer.start(0.34)
+		
+		 
+	
+	
+	if timeSinceJumpPress < 0.1 and (on_floor or (Time.get_ticks_msec() - last_time_on_ground) < 200) and is_jumping == false:
+		timeSinceJumpPress += 1
 		is_jumping = true
 		on_floor = false
 		randomizePitchAndPlay($SFX/jump, 0.95, 1.05)
@@ -134,7 +179,7 @@ func _physics_process(delta: float) -> void:
 		if grav < MAX_GRAVITY:
 			grav += 2
 	else:
-		isDashing= false
+		isDashing = false
 		is_jumping = false
 		grav = START_GRAVITY
 	
@@ -149,22 +194,33 @@ func _physics_process(delta: float) -> void:
 			facing_forward = true
 		else:
 			facing_forward = false
-		if not isDashing:
+		if not isDashing and not isWallJumping:
 			velocity.x = direction * speed
 		else:
 			velocity -= Vector2(10, 10)
 		if speed < MAX_SPEED:
-			speed += 40
+			speed += 20
+		
+		if (rightchecker.is_colliding() or leftchecker.is_colliding()):
+			canWallJump = true
+			if velocity.y >= 0:
+				wallSlideDecrement += delta
+				velocity.y /= wallSlideDecrement 
+		else:
+			canWallJump = false
+			wallSlideDecrement = 1.0
+			pass
 	else:
 		velocity.x = move_toward(velocity.x, 0, MAX_SPEED/7)
 		speed = START_SPEED
 	animationHandler(direction)
 	move_and_slide()
 	
-
+	#print(canWallJump)
 
 func _on_airdashtimer_timeout() -> void:
 	isDashing = false
+	isWallJumping = false
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:

@@ -207,7 +207,7 @@ scale = Vector2(187.7, 1)
 
 [node name="Area2D6" parent="Deathzones" index="5" instance=ExtResource("3_pqo0d")]
 position = Vector2(-6494, 4082)
-scale = Vector2(375.765, 1)
+scale = Vector2(494.93, 1)
 
 [node name="Area2D7" parent="Deathzones" index="6" instance=ExtResource("3_pqo0d")]
 position = Vector2(-2674, 1283)

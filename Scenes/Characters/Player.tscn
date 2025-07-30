@@ -423,10 +423,8 @@ script = ExtResource("1_o5en2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_hl70s")
-animation = &"celebrate"
 autoplay = "default"
-frame = 49
-frame_progress = 1.0
+frame_progress = 0.926249
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
@@ -449,6 +447,18 @@ bus = &"SFX"
 [node name="dash" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("7_w38he")
 bus = &"SFX"
+
+[node name="WalljumpColliders" type="Node2D" parent="."]
+
+[node name="rightchecker" type="RayCast2D" parent="WalljumpColliders"]
+position = Vector2(1, -12)
+target_position = Vector2(15, 0)
+collision_mask = 64
+
+[node name="leftchecker" type="RayCast2D" parent="WalljumpColliders"]
+position = Vector2(-1, -12)
+target_position = Vector2(-15, 0)
+collision_mask = 64
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="airdashtimer" to="." method="_on_airdashtimer_timeout"]

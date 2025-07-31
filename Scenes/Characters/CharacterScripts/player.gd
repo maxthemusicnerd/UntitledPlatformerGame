@@ -78,14 +78,32 @@ var facing_forward = true
 
 func animationHandler(direction):
 	
-	if not facing_forward:
-		sprite.flip_h = true
-	else:
-		sprite.flip_h = false
+	if not isWallJumping:
+		if not facing_forward:
+			sprite.flip_h = true
+		else:
+			sprite.flip_h = false
+	
 	
 	if state == STATES.WIN:
 		sprite.play("celebrate")
 		return
+	
+	if canWallJump:
+		sprite.play("cling")
+		return
+	
+	if isWallJumping:
+		sprite.play("walljump")
+		if canWallJump:
+			sprite.play("cling")
+			if not facing_forward:
+				sprite.flip_h = true
+			else:
+				sprite.flip_h = false
+			return
+		return
+	
 	
 	if is_jumping:
 		sprite.speed_scale = 1.0
@@ -99,6 +117,8 @@ func animationHandler(direction):
 			var animSpeed = abs(velocity.x / (MAX_SPEED / 2))
 			sprite.speed_scale = animSpeed
 			sprite.play("run")
+	
+	
 
 
 func randomizePitchAndPlay(sfx, min, max):
@@ -154,14 +174,14 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("jump") and canWallJump and not on_floor:
 		isWallJumping = true 
+		canWallJump = false
 		velocity.y = -JUMP_HEIGHT * 1.2
 		if facing_forward:
-			velocity.x = -500
+			velocity.x = -800
 		else:
-			velocity.x = 500
-		randomizePitchAndPlay($SFX/jump, 0.95, 1.05)
-		airdashtimer.start(0.34)
-		
+			velocity.x = 800
+		randomizePitchAndPlay($SFX/walljump, 0.8, 0.9)
+		airdashtimer.start(0.3)
 		 
 	
 	
@@ -201,8 +221,9 @@ func _physics_process(delta: float) -> void:
 		if speed < MAX_SPEED:
 			speed += 20
 		
-		if (rightchecker.is_colliding() or leftchecker.is_colliding()):
-			canWallJump = true
+		if (rightchecker.is_colliding() and direction > 0) or (leftchecker.is_colliding() and direction < 0):
+			if not on_floor:
+				canWallJump = true
 			if velocity.y >= 0:
 				wallSlideDecrement += delta
 				velocity.y /= wallSlideDecrement 
@@ -213,10 +234,10 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, MAX_SPEED/7)
 		speed = START_SPEED
+		canWallJump = false
 	animationHandler(direction)
 	move_and_slide()
 	
-	#print(canWallJump)
 
 func _on_airdashtimer_timeout() -> void:
 	isDashing = false
@@ -226,3 +247,5 @@ func _on_airdashtimer_timeout() -> void:
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation == "celebrate":
 		get_parent().nextLevel(nextLevelName)
+	if sprite.animation == "walljump":
+		isWallJumping = false

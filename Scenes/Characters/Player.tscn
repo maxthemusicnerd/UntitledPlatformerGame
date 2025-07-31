@@ -1,12 +1,14 @@
-[gd_scene load_steps=37 format=3 uid="uid://dc7hiwo06jn4f"]
+[gd_scene load_steps=44 format=3 uid="uid://dc7hiwo06jn4f"]
 
 [ext_resource type="Texture2D" uid="uid://qi1j33ni2qxu" path="res://Sprites/Characters/BobSpriteSheet.png" id="1_0el0d"]
 [ext_resource type="Script" uid="uid://dtyfxi740ultj" path="res://Scenes/Characters/CharacterScripts/player.gd" id="1_o5en2"]
 [ext_resource type="Texture2D" uid="uid://d3ic37ppfuodc" path="res://Sprites/Characters/celebrate.png" id="2_7qdam"]
 [ext_resource type="Texture2D" uid="uid://de4ceiwlvsfjv" path="res://Sprites/Characters/RunSpriteSheet.png" id="2_o5en2"]
 [ext_resource type="Texture2D" uid="uid://b5jol61r3jiah" path="res://Sprites/Characters/JumpWithDist.png" id="3_7pt4t"]
+[ext_resource type="Texture2D" uid="uid://c8h4drikx8m41" path="res://Sprites/Characters/Walljump.png" id="3_w38he"]
 [ext_resource type="AudioStream" uid="uid://c4shdmtgx58v1" path="res://Audio/SFX/Jump.mp3" id="6_qkgjm"]
 [ext_resource type="AudioStream" uid="uid://ce8v86ji0unoy" path="res://Audio/SFX/Slide.mp3" id="7_w38he"]
+[ext_resource type="AudioStream" uid="uid://dqscpluagtjrs" path="res://Audio/SFX/Walljump2.mp3" id="9_meglp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hqlak"]
 atlas = ExtResource("2_7qdam")
@@ -27,6 +29,10 @@ region = Rect2(192, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_2n8gu"]
 atlas = ExtResource("2_7qdam")
 region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m2jkf"]
+atlas = ExtResource("3_w38he")
+region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7pt4t"]
 atlas = ExtResource("1_0el0d")
@@ -115,6 +121,22 @@ region = Rect2(256, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_toq76"]
 atlas = ExtResource("2_o5en2")
 region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_spibu"]
+atlas = ExtResource("3_w38he")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h1o3h"]
+atlas = ExtResource("3_w38he")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ynkr0"]
+atlas = ExtResource("3_w38he")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrttg"]
+atlas = ExtResource("3_w38he")
+region = Rect2(192, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hl70s"]
 animations = [{
@@ -275,6 +297,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_m2jkf")
+}],
+"loop": true,
+"name": &"cling",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_7pt4t")
 }, {
 "duration": 1.0,
@@ -413,6 +443,23 @@ animations = [{
 "loop": true,
 "name": &"run",
 "speed": 13.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_spibu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h1o3h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ynkr0")
+}, {
+"duration": 16.0,
+"texture": SubResource("AtlasTexture_mrttg")
+}],
+"loop": false,
+"name": &"walljump",
+"speed": 40.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ltdul"]
@@ -423,8 +470,10 @@ script = ExtResource("1_o5en2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_hl70s")
+animation = &"walljump"
 autoplay = "default"
-frame_progress = 0.926249
+frame = 3
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
@@ -447,6 +496,10 @@ bus = &"SFX"
 [node name="dash" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("7_w38he")
 bus = &"SFX"
+
+[node name="walljump" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("9_meglp")
+volume_db = -9.369
 
 [node name="WalljumpColliders" type="Node2D" parent="."]
 

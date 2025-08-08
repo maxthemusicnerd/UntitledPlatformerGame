@@ -18,7 +18,7 @@ position = Vector2(66, 611)
 
 [node name="goal" parent="." instance=ExtResource("2_6cxjt")]
 position = Vector2(12248, 722)
-nextLevelName = "tester_level"
+nextLevelName = "level4"
 
 [node name="enemies" type="Node2D" parent="."]
 

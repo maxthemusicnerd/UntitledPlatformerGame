@@ -140,7 +140,6 @@ func _physics_process(delta: float) -> void:
 		last_time_on_ground = Time.get_ticks_msec()
 	
 	
-	#input buffering
 	timeSinceAirdashPress += delta
 	timeSinceJumpPress += delta
 	
@@ -161,14 +160,17 @@ func _physics_process(delta: float) -> void:
 			if dist < enemyDist:
 				enemy = entity
 				enemyDist = dist
-		enemy.disableCollision()
-		var attackVector = (Vector2(enemy.global_position.x, enemy.global_position.y) - Vector2(global_position.x, global_position.y)).normalized()
-		enemy.queue_free()
-		attackVector.y *= 1.1
-		velocity = attackVector * dashStrenghth
-		isDashing = true 
-		airdashtimer.start(0.34)
-		randomizePitchAndPlay($SFX/dash, 0.95, 1.05)
+		if enemy:
+			enemy.disableCollision()
+			#vector to enemy averaged with joystick input vector normalized 
+			#var attackVector = Input.get_vector("left", "right", "up", "down")
+			var attackVector = ((((Vector2(enemy.global_position.x, enemy.global_position.y) - Vector2(global_position.x, global_position.y)).normalized()) + Input.get_vector("left", "right", "up", "down")) / 2).normalized()
+			enemy.queue_free()
+			attackVector.y *= 1.1
+			velocity = attackVector * dashStrenghth
+			isDashing = true 
+			airdashtimer.start(0.34)
+			randomizePitchAndPlay($SFX/dash, 0.95, 1.05)
 		
 	
 	

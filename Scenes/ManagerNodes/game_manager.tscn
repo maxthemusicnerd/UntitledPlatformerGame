@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://c3jyoplj1m0bt"]
 
 [ext_resource type="Script" uid="uid://kweackggtp1a" path="res://Scenes/ManagerNodes/ManagerNodeScripts/game_manager.gd" id="1_lugbv"]
-[ext_resource type="PackedScene" uid="uid://bkpqg68j6ojow" path="res://Scenes/Levels/level4.tscn" id="2_l5mbq"]
+[ext_resource type="PackedScene" uid="uid://dtn8km8mm5uff" path="res://Scenes/Levels/level1.tscn" id="2_l5mbq"]
 [ext_resource type="PackedScene" uid="uid://dc7hiwo06jn4f" path="res://Scenes/Characters/Player.tscn" id="3_l5mbq"]
 [ext_resource type="PackedScene" uid="uid://oagkb2xco4p8" path="res://Scenes/ManagerNodes/audio_manager.tscn" id="4_l5mbq"]
 
@@ -10,10 +10,10 @@ script = ExtResource("1_lugbv")
 
 [node name="CurrentLevel" type="Node2D" parent="."]
 
-[node name="Level4" parent="CurrentLevel" instance=ExtResource("2_l5mbq")]
+[node name="Level1" parent="CurrentLevel" instance=ExtResource("2_l5mbq")]
 
 [node name="Player" parent="." instance=ExtResource("3_l5mbq")]
-position = Vector2(-1908, 1100)
+position = Vector2(3701, -1082)
 scale = Vector2(0.495, 0.495)
 
 [node name="AudioManager" parent="." instance=ExtResource("4_l5mbq")]

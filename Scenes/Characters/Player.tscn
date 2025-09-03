@@ -480,8 +480,12 @@ position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_ltdul")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(188, -46)
+position = Vector2(-2, -7)
 zoom = Vector2(1.31, 1.31)
+process_callback = 0
+position_smoothing_speed = 1.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
 
 [node name="airdashtimer" type="Timer" parent="."]
 wait_time = 0.057

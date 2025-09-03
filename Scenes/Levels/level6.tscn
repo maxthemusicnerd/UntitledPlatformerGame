@@ -295,3 +295,6 @@ spawn_point = NodePath("../spawnpoint")
 [node name="Checkpoint3" parent="." index="10" node_paths=PackedStringArray("spawn_point") instance=ExtResource("9_gy1w6")]
 position = Vector2(12822, 305)
 spawn_point = NodePath("../spawnpoint")
+
+[node name="Area2D" parent="." index="11" instance=ExtResource("5_gy1w6")]
+position = Vector2(12613, -3802)

@@ -133,7 +133,7 @@ var timeSinceJumpPress: float = 1
 
 
 func _physics_process(delta: float) -> void: 
-	print(Engine.get_frames_per_second())
+	#print(Engine.get_frames_per_second())
 	var on_floor = false
 	if is_on_floor():
 		on_floor = true
